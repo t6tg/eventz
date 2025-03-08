@@ -1,0 +1,10 @@
+  <% if object.errors.any? %>
+  <section class="errors">
+    <h2><%= pluralize(object.errors.count, "error") %> prohibited this article from being saved:</h2>
+    <ul>
+      <% object.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

@@ -1,10 +1,13 @@
 <section class="event-details">
+  <div class="image">
+    <%= image_tag @event.image_file_name %>
+  </div>
   <div class="details">
     <h1>
       <%= @event.name %>
     </h1>
     <h2>
-      <%= price(@event) %>
+      <%= pluralize(@event.capacity, "spot") %> • <%= price(@event) %>
     </h2>
     <h3>
       <%= day_and_time(@event) %> in  <%= @event.location %>
@@ -12,9 +15,14 @@
     <p>
       <%= @event.description %>
     </p>
+    <div class="register">
+      <p>
+        <%= link_to "Who's register", event_registrations_path(@event) %>
+      </p>
+    </div>
   </div>
 </section>
 <section class="admin">
   <%= link_to "Edit", edit_event_path(@event), class: "button" %>
-<%= button_to "Delete", @event, class: "button" , data: { turbo_method: :delete, turbo_confirm: "Really?" } %>
+  <%= button_to "Delete", @event, class: "button" , data: { turbo_method: :delete, turbo_confirm: "Really?" } %>
 </section>
