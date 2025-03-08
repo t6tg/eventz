@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_08_133732) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_08_161114) do
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "categorizations", force: :cascade do |t|
+    t.integer "event_id", null: false
+    t.integer "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_categorizations_on_category_id"
+    t.index ["event_id"], name: "index_categorizations_on_event_id"
+  end
+
   create_table "events", force: :cascade do |t|
     t.string "name"
     t.string "location"
@@ -21,6 +36,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_08_133732) do
     t.text "description"
     t.string "image_file_name", default: "placeholder.png"
     t.integer "capacity", default: 1
+    t.string "slug"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "event_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_likes_on_event_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "registrations", force: :cascade do |t|
@@ -41,5 +66,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_08_133732) do
     t.boolean "admin", default: false
   end
 
+  add_foreign_key "categorizations", "categories"
+  add_foreign_key "categorizations", "events"
+  add_foreign_key "likes", "events"
+  add_foreign_key "likes", "users"
   add_foreign_key "registrations", "events"
 end

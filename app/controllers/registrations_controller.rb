@@ -1,5 +1,6 @@
 class RegistrationsController < ApplicationController
   before_action :set_event
+  before_action :require_signin, only: [ :new, :create ]
 
   def index
     @registrations = @event.registrations
@@ -15,8 +16,9 @@ class RegistrationsController < ApplicationController
   end
 
   def create
-    @registrations = @event.registrations.new(registration_params)
-    if @registrations.save
+    @registration = @event.registrations.new(registration_params)
+    @registration.user = current_user
+    if @registration.save
       redirect_to event_registrations_url(@event), notice: "Thanks for registring!"
     else
       render :new, status: :unprocessable_entity
@@ -25,10 +27,10 @@ class RegistrationsController < ApplicationController
 
   private
   def registration_params
-    params.require(:registration).permit(:name, :email, :how_heard)
+    params.require(:registration).permit(:how_heard)
   end
 
   def set_event
-    @event = Event.find(params[:event_id])
+    @event = Event.find_by!(slug: params[:event_id])
   end
 end
