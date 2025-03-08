@@ -1,6 +1,7 @@
   <% if object.errors.any? %>
   <section class="errors">
-    <h2><%= pluralize(object.errors.count, "error") %> prohibited this article from being saved:</h2>
+    <h2>Oops! Your form could not be saved.</h1>
+    <h3>Please correct the following <%= pluralize(object.errors.count, "error") %> </h2>
     <ul>
       <% object.errors.each do |error| %>
         <li><%= error.full_message %></li>

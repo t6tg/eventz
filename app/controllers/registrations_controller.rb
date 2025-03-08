@@ -7,7 +7,11 @@ class RegistrationsController < ApplicationController
 
 
   def new
-    @registrations = Registration.new
+    if @event.soldout?
+      redirect_to event_path(@event)
+    else
+      @registrations = Registration.new
+    end
   end
 
   def create
